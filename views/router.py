@@ -1,8 +1,12 @@
 import flet as ft
 
-from views.index_view import IndexView
-from views.download_view import DownloadView
-from views.settings_view import SettingsView
+import views.index_view as iv
+import views.download_view as dv
+import views.settings_view as sv
+
+import backend.downloader as bkd
+
+dv.run_backend = bkd.download_song
 
 class Router:
     
@@ -10,9 +14,9 @@ class Router:
         self.page = page
         self.ft = ft
         self.routes = {
-            "/": IndexView(page),
-            "/download": DownloadView(page),
-            "/settings": SettingsView(page)
+            "/": iv.IndexView(page),
+            "/download": dv.DownloadView(page),
+            "/settings": sv.SettingsView(page)
         }
         self.body = ft.Container(content=self.routes['/'])
 
