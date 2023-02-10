@@ -18,7 +18,9 @@ class Router:
             "/download": dv.DownloadView(page),
             "/settings": sv.SettingsView(page)
         }
-        self.body = ft.Container(content=self.routes['/'])
+        self.body = ft.Container(
+            content=self.routes['/'],
+            )
 
     def route_change(self, route):
         self.body.content = self.routes[route.route]

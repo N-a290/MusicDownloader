@@ -5,7 +5,7 @@ run_backend = None
 def DownloadView(page, ft=ft):
 
     def pick_file_result(e: ft.FilePickerResultEvent):
-            selected_path.value = str(pick_file_dialog.result.path) + ".mp4"
+            selected_path.value = str(pick_file_dialog.result.path) + ".mp3"
             page.update()
 
     def handle_submit(e):
@@ -35,8 +35,8 @@ def DownloadView(page, ft=ft):
         "Escoge el nombre del archivo",
         icon=ft.icons.UPLOAD_FILE,
         on_click=lambda _: pick_file_dialog.save_file(
-            file_type="video", 
-            allowed_extensions=["mp4"])
+            file_type="audio", 
+            allowed_extensions=["mp3"])
         )
     page.overlay.append(pick_file_dialog)
     selected_path = ft.Text()
