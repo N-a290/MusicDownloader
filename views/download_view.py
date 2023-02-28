@@ -1,4 +1,7 @@
+from time import sleep
+
 import flet as ft 
+
 
 run_backend = None
 
@@ -17,12 +20,25 @@ def DownloadView(page, ft=ft):
             run_backend(url_input.value, selected_path.value, in_progress, on_complete, handle_error)
             page.update()
 
-    def in_progress(*args):
-        download_complete.value = "Descargando..."
-        page.update()
-    
+    def in_progress(d):
+        if d['status'] == 'downloading':
+            try:
+                total_bytes = d['total_bytes']
+            except KeyError:
+                total_bytes = d['total_bytes_estimate']
+
+            time_left = d['eta']
+            percent = d['downloaded_bytes'] / total_bytes
+
+            download_complete.value = f"Descargando..."
+            timeleft_message.value = f"Tiempo restante => {time_left}"
+            progress_bar.value = percent
+
+            page.update()
+
     def on_complete(*args):
         download_complete.value = "Descarga Completa"
+        timeleft_message.value = ""
         page.update()
 
     def handle_error(*args):
@@ -44,7 +60,9 @@ def DownloadView(page, ft=ft):
 
     download_button = ft.TextButton("Descargar", on_click=handle_submit)
     
-    download_complete = ft.Text()
+    download_complete = ft.Text(style="headlineSmall")
+    timeleft_message = ft.Text(style="headlineSmall")
+    progress_bar = ft.ProgressBar(width=400, value=0)
 
     content = ft.Column(
             [   
@@ -62,8 +80,10 @@ def DownloadView(page, ft=ft):
                 ],
                 alignment=ft.MainAxisAlignment.CENTER
                     ),
-                ft.Row([
-                    download_complete
+                ft.Column([
+                    download_complete,
+                    timeleft_message,
+                    progress_bar
                 ],
                 alignment=ft.MainAxisAlignment.CENTER)
             ],

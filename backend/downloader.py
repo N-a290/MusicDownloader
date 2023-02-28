@@ -1,47 +1,62 @@
 from pytube import YouTube, Playlist, request
+import yt_dlp
 
 import os
 from pathlib import Path
 
 request.default_range_size = 500000
 
-def get_playlist_data(url):
-    pass
-
-def get_song_data():
-    pass
-
-def download_playlist(url):
-    pass
-
 def download_song(url, save_location, in_progress, on_complete, handle_error):
-    '''
-    Problema: Pytube no soporta mp3 y descarga los audios en mp4, esto
-    genera que las canciones no salgan completas
-    '''
-
     try:
+        # Get the name of the folder and file
         filename = str(Path(save_location).name)
         output_path = str(os.path.split(Path(save_location))[0])
         print(filename)
         print(output_path)
-        download = YouTube(url, on_progress_callback=in_progress, on_complete_callback=on_complete)
-        # stream = download.streams.filter(progressive=True).get_highest_resolution()
-        stream = download.streams.filter(only_audio=True).first()
-        print(stream)
-        # stream.download(filename=filename, output_path=output_path)
-        # stream.download(output_path=output_path)
-        out_file = stream.download(output_path=output_path)
-        base, ext = os.path.splitext(out_file)
-        new_file = base + '.mp3'
-        os.rename(out_file, new_file)
-        return  
-    except:
-        error = True
+        
+        # Configurations
+        video_info = yt_dlp.YoutubeDL().extract_info(
+            url=url, download=False
+        )
+        options = {
+            'format':'bestaudio/best',
+            'keepvideo':False,
+            'outtmpl':f'{output_path}/{filename}',
+            'progress_hooks': [in_progress],
+        }
+
+        # Downloading phase
+        with yt_dlp.YoutubeDL(options) as ydl:
+            ydl.download([video_info['webpage_url']])
+        print("Download complete... {}".format(filename))
+        on_complete()
+
+    except Exception as error:
+        print(error)
         handle_error()
-        return
+
+
+def download_video(url, save_location, in_progress, on_complete, handle_error):
+    try:
+        # Get the name of the folder and file
+        filename = str(Path(save_location).name)
+        output_path = str(os.path.split(Path(save_location))[0])
+        print(filename)
+        print(output_path)
+
+        # Create the Youtube object
+        download = YouTube(url, on_progress_callback=in_progress, on_complete_callback=on_complete)
+
+        # Get the stream of the video
+        stream = download.streams.filter(progressive=True).get_highest_resolution()
+
+        # Download the video
+        stream.download(filename=filename, output_path=output_path)
+        print("Download complete... {}".format(filename))
+
+    except:
+        handle_error()
+
 
 if __name__ == '__main__':
-    output_path = r"C:\Users\PC Angel\Music\test.mp4"
-    download_song("https://www.youtube.com/watch?v=Ijk4j-r7qPA", output_path, get_song_data, get_song_data, get_song_data)
-    
+    pass
