@@ -20,6 +20,7 @@ class Router:
         }
         self.body = ft.Container(
             content=self.routes['/'],
+            expand=True
             )
 
     def route_change(self, route):

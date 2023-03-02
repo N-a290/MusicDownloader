@@ -54,7 +54,8 @@ def download_video(url, save_location, in_progress, on_complete, handle_error):
         stream.download(filename=filename, output_path=output_path)
         print("Download complete... {}".format(filename))
 
-    except:
+    except Exception as error:
+        print(error)
         handle_error()
 
 

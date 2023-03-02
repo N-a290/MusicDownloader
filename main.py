@@ -2,6 +2,7 @@ import flet as ft
 
 from views.router import Router
 from user_controls.app_bar import NavBar
+from user_controls.reproductor import Reproductor
 
 def main(page : ft.Page):
     # Page initialization
@@ -14,10 +15,12 @@ def main(page : ft.Page):
     # Page Components
     page.appbar = NavBar(page, ft)
     myRouter = Router(page,ft)
+    reproductor = Reproductor(page, ft)
     page.on_route_change = myRouter.route_change
 
     page.add(
-        myRouter.body
+        myRouter.body,
+        reproductor
     )
     
     page.go('/')

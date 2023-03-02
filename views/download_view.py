@@ -45,7 +45,10 @@ def DownloadView(page, ft=ft):
         download_complete.value = "Algo salió mal, intenta de nuevo"
         page.update()
 
-    url_input = ft.TextField(label="URL de la canción")
+    url_input = ft.TextField(
+        label="URL de la canción",
+        expand=True    
+    )
     pick_file_dialog = ft.FilePicker(on_result=pick_file_result)
     pick_file_button = ft.ElevatedButton(
         "Escoge el nombre del archivo",
