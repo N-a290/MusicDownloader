@@ -1,9 +1,12 @@
 from pytube import YouTube, Playlist, request
 import yt_dlp
 
+# import threading
+
 import os
 from pathlib import Path
 
+# thread = threading.Thread()
 request.default_range_size = 500000
 
 def download_song(url, save_location, in_progress, on_complete, handle_error):
@@ -19,10 +22,16 @@ def download_song(url, save_location, in_progress, on_complete, handle_error):
             url=url, download=False
         )
         options = {
+            'writethumbnail': True,
             'format':'bestaudio/best',
             'keepvideo':False,
             'outtmpl':f'{output_path}/{filename}',
             'progress_hooks': [in_progress],
+            # 'postprocessors': [
+            #         {'key': 'FFmpegExtractAudio', 'preferredcodec': 'mp3'},
+            #         {'key': 'FFmpegMetadata', 'add_metadata': True},
+            #         {'key': 'EmbedThumbnail'}
+            #     ],
         }
 
         # Downloading phase

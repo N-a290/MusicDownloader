@@ -39,6 +39,8 @@ def DownloadView(page, ft=ft):
     def on_complete(*args):
         download_complete.value = "Descarga Completa"
         timeleft_message.value = ""
+        url_input.value = ""
+        selected_path.value = "Ubicación del archivo"
         page.update()
 
     def handle_error(*args):
@@ -77,7 +79,9 @@ def DownloadView(page, ft=ft):
                 ft.Row([
                     pick_file_button,
                     selected_path
-                    ]),
+                ],
+                alignment=ft.MainAxisAlignment.START
+                    ),
                 ft.Row([
                     download_button,
                 ],
@@ -90,7 +94,7 @@ def DownloadView(page, ft=ft):
                 ],
                 alignment=ft.MainAxisAlignment.CENTER)
             ],
-            alignment=ft.MainAxisAlignment.CENTER,
-            spacing=50
+            alignment=ft.MainAxisAlignment.SPACE_AROUND,
+            spacing=30
         )
     return content

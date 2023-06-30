@@ -1,4 +1,6 @@
 import flet as ft
+# import logging
+# logging.basicConfig(level=logging.DEBUG)
 
 from views.router import Router
 from user_controls.app_bar import NavBar
@@ -26,4 +28,4 @@ def main(page : ft.Page):
     page.go('/')
 
 
-ft.app(target=main)
+ft.app(target=main, assets_dir='assets')
